@@ -15,7 +15,7 @@ public class XposedInit implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
 
-        XposedHelpers.findAndHookMethod("com.regus.pay.MainActivity"
+        XposedHelpers.findAndHookMethod("com.regus.pay.activity.MainActivity"
                 , lpparam.classLoader
                 , "MyToast"
                 , String.class, new XC_MethodHook() {

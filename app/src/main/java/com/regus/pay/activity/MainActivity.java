@@ -1,8 +1,10 @@
-package com.regus.pay;
+package com.regus.pay.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.regus.pay.R;
 
 public class MainActivity extends AppCompatActivity {
 

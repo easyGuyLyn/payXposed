@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">付款码助手</string>
+
+
+
+    <string name="http_code_default">未知错误%1$d</string>
+    <string name="http_code_400">无权限访问</string>
+    <string name="http_code_404">请求链接或页面找不到</string>
+    <string name="http_code_500">服务器内部错误</string>
+
+
+    <!--加载刷洗-->
+    <string name="REFRESHING">正在刷新</string>
+    <string name="RELEASE_TO_REFRESH">松开刷新</string>
+    <string name="SWIPE_TO_REFRESH">下拉刷新</string>
+    <string name="REFRESH_RETURNING">刷新正在返回中</string>
+    <string name="REFRESH_COMPLETE">刷新完成</string>
+    <string name="LOADING_MORE">正在加载更多</string>
+    <string name="RELEASE_TO_LOAD_MORE">松开加载更多</string>
+    <string name="SWIPE_TO_LOAD_MORE">上拉加载更多</string>
+    <string name="LOAD_MORE_RETURNING">加载正在返回中</string>
+    <string name="LOAD_MORE_COMPLETE">加载更多完成</string>
+    <string name="NO_MORE_DATA">没有更多的数据</string>
 </resources>

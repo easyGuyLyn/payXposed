@@ -19,3 +19,310 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#---------------------------------基本指令区----------------------------------
+# 设置混淆的压缩比率 0 ~ 7
+-optimizationpasses 5
+# 混淆后类名都为小写   Aa aA
+-dontusemixedcaseclassnames
+# 指定不去忽略非公共库的类
+-dontskipnonpubliclibraryclasses
+#不做预校验的操作
+-dontpreverify
+# 混淆时不记录日志
+-verbose
+# 混淆采用的算法.
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#保留代码行号，方便异常信息的追踪
+-keepattributes SourceFile,LineNumberTable
+
+#dump文件列出apk包内所有class的内部结构
+-dump class_files.txt
+#seeds.txt文件列出未混淆的类和成员
+-printseeds seeds.txt
+#usage.txt文件列出从apk中删除的代码
+-printusage unused.txt
+#mapping文件列出混淆前后的映射
+-printmapping mapping.txt
+
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*
+-keepattributes JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+#---------------------------------默认保留区---------------------------------
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+-keep public class com.android.vending.licensing.ILicensingService
+-keep class android.support.** {*;}
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keepclassmembers class * extends android.app.Activity{
+    public void *(android.view.View);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep public class * extends android.view.View{
+    *** get*();
+    void set*(***);
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-keep class **.R$* {
+ *;
+}
+-keepclassmembers class * {
+    void *(**On*Event);
+}
+
+
+
+#---------------------依赖注入---------------------
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+#---------------------依赖注入----------------------
+
+
+
+# ---------------------------------------OkHttp3---------------------------------------------------
+-dontwarn okhttp3.**
+-dontwarn okio.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# ---------------------------------------OkHttp3---------------------------------------------------
+
+
+
+# ----------------------------------RxJava RxAndroid-----------------------------------------------
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+# ----------------------------------RxJava RxAndroid-----------------------------------------------
+
+
+
+#-------------------------------------okhttputils--------------------------------------------------
+-dontwarn com.zhy.http.**
+-keep class com.zhy.http.**{*;}
+#-------------------------------------okhttputils--------------------------------------------------
+
+
+
+#----------------------------------Begin: Gson  ---------------------------------------------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.regus.base.bean.**{*;}   #------实体类不可混淆
+#-keep class com.dawoo.chessbox.net.HttpResult.**{*;}   #------模板实体类不可混淆
+#-keep class com.dawoo.chessbox.util.NetUtil{*;}   #------项目中的NetUtil x5 settings不混淆
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+##-----------------------------------End: Gson ------------------------------------- ----------
+
+
+
+
+#---------------------------------------Rxbus--------------------------------------------------
+-keep class com.hwangjr.rxbus.** { *; }
+#---------------------------------------Rxbus------------------------------------------------
+
+
+
+
+#---------------------------------webview------------------------------------
+#-keepclassmembers class com.dawoo.chessbox.view.activity.webview.WebViewActivity {
+#   public *;
+#}
+#-keepclassmembers class com.dawoo.chessbox.view.activity.webview.WebViewActivity.InJavaScriptGame {
+#   public *;
+#}
+#-keepclassmembers class com.dawoo.chessbox.view.activity.webview.WebViewActivity.InJavaScriptCommon {
+#   public *;
+#}
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+    public boolean *(android.webkit.WebView, java.lang.String);
+     public void *(android.webkit.WebView, jav.lang.String);
+}
+
+
+#---------------------------------webview------------------------------------
+
+
+
+
+
+
+#########################################################
+#         retrofit                                      #
+#                                                       #
+-dontnote retrofit2.Platform                            #
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor     #
+-dontwarn retrofit2.Platform$Java8                      #
+-keepattributes Signature                               #
+-keepattributes Exceptions                              #
+-dontwarn okio.**                                       #
+-dontwarn javax.annotation.**                           #
+#                                                       #
+#########################################################
+-keep class com.dawoo.chessbox.net.** { *; }     #对retrofit框架的封装，不可混淆。
+
+
+
+
+############################################################################################################
+#                                           glide                                                          #
+#                                                                                                          #
+-keep public class * implements com.bumptech.glide.module.GlideModule                                      #
+-keep public class * extends com.bumptech.glide.module.AppGlideModule                                      #
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {                           #
+  **[] $VALUES;                                                                                            #
+  public *;                                                                                                #
+}                                                                                                          #
+#                                                                                                          #
+# for DexGuard only                                                                                        #
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule                                  #
+-keep class com.bumptech.glide.integration.okhttp.OkHttpGlideModule                                       #
+#                                                                                                          #
+############################################################################################################
+
+###################################################
+#########AVLoadingIndicatorView####################
+###################################################
+-keep class com.wang.avi.** { *; }#################
+-keep class com.wang.avi.indicators.** { *; }######
+###################################################
+
+###############################################################################################
+############       BaseRecyclerViewAdapterHelper
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+##############################################################################################
+
+###############################################################################################
+##########################com.youth.banner:banner##############################################
+
+# glide 的混淆代码
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# banner 的混淆代码
+-keep class com.youth.banner.** {
+    *;
+ }
+###############################################################################################
+
+
+#######################################################
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+   @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+   @butterknife.* <methods>;
+}
+
+##########################################################
+#         org.apache.httpcomponents:httpcore:4.4.4
+-keep class android.net.http.** { *; }
+-keep class org.apache.http.** { *; }
+-dontwarn android.net.http.**
+-dontwarn org.apache.http.**
+
+
+
+########################
+#        腾讯x5
+-keep class com.tencent.** { *; }
+-dontwarn com.tencent.smtt.export.external.**
+
+-dontskipnonpubliclibraryclassmembers
+-dontwarn dalvik.**
+# --------------------------------------------------------------------------
+# Addidional for x5.sdk classes for apps
+
+#------------------  下方是共性的排除项目         ----------------
+# 方法名中含有“JNI”字符的，认定是Java Native Interface方法，自动排除
+# 方法名中含有“JRI”字符的，认定是Java Reflection Interface方法，自动排除
+
+-keepclasseswithmembers class * {
+    ... *JNI*(...);
+}
+
+-keepclasseswithmembernames class * {
+	... *JRI*(...);
+}
+
+-keep class **JNI* {*;}
+#---------------------------------------------------------------------------
+
+
+
+#-keep class com.dawoo.ipcsdk.** { *; }
+#-dontwarn com.dawoo.ipcsdk.**
+
+##------------------------------------------------------------
+-keep class com.alibaba.fastjson.** { *; }
+-dontwarn com.alibaba.fastjson.**
+##------------------------------------------------------------
+
+
