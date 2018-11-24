@@ -3,7 +3,7 @@ package com.regus.pay.util;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.regus.pay.global.PayApp;
+import com.regus.pay.global.PayApplication;
 
 
 /**
@@ -32,7 +32,7 @@ public class SingleToast {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             showToast(msg);
         } else {
-            PayApp.handler.post(new Runnable() {
+            PayApplication.handler.post(new Runnable() {
                 @Override
                 public void run() {
                     showToast(msg);
@@ -46,7 +46,7 @@ public class SingleToast {
         if (mToast != null) {
             mToast.setText(msg);
         } else {
-            mToast = Toast.makeText(PayApp.mAppContext, msg, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(PayApplication.mAppContext, msg, Toast.LENGTH_SHORT);
         }
         mToast.show();
     }

@@ -7,6 +7,7 @@ android {
 
 
     defaultConfig {
+        applicationId "com.regus.pay"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
@@ -17,11 +18,21 @@ android {
 
     buildTypes {
         debug {
+            // 开启ZipAlign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            minifyEnabled false
             // 混淆文件位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
         release {
+            // 开启ZipAlign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            minifyEnabled true
             // 混淆文件位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -67,7 +78,9 @@ dependencies {
 
     implementation 'com.dhh:websocket:2.1.2'
 
-    implementation 'com.zhouyou:rxeasyhttp:2.1.2'
+  //    implementation 'com.zhouyou:rxeasyhttp:2.1.2'
+
+    implementation 'com.zhy:okhttputils:2.6.2'
 
     implementation 'com.alibaba:fastjson:1.2.47'
 
@@ -76,6 +89,15 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
     implementation 'com.guoqi.widget:iosdialog:0.2'
+
+    implementation 'com.hwangjr.rxbus:rxbus:1.0.6'
+    
+    // 改 statusBar
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"

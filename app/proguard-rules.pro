@@ -137,12 +137,6 @@
 
 
 
-#-------------------------------------okhttputils--------------------------------------------------
--dontwarn com.zhy.http.**
--keep class com.zhy.http.**{*;}
-#-------------------------------------okhttputils--------------------------------------------------
-
-
 
 #----------------------------------Begin: Gson  ---------------------------------------------
 # Gson uses generic type information stored in a class file when working with fields. Proguard
@@ -157,11 +151,8 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.regus.base.bean.**{*;}   #------实体类不可混淆
-#-keep class com.dawoo.chessbox.net.HttpResult.**{*;}   #------模板实体类不可混淆
-#-keep class com.dawoo.chessbox.util.NetUtil{*;}   #------项目中的NetUtil x5 settings不混淆
-# Prevent proguard from stripping interface information from TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class com.regus.pay.bean.**{*;}   #------实体类不可混淆
+
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
@@ -201,7 +192,6 @@
 
 
 
-
 #########################################################
 #         retrofit                                      #
 #                                                       #
@@ -214,7 +204,7 @@
 -dontwarn javax.annotation.**                           #
 #                                                       #
 #########################################################
--keep class com.dawoo.chessbox.net.** { *; }     #对retrofit框架的封装，不可混淆。
+-keep class com.regus.pay.db.entity.** { *; }
 
 
 
@@ -324,5 +314,10 @@
 -keep class com.alibaba.fastjson.** { *; }
 -dontwarn com.alibaba.fastjson.**
 ##------------------------------------------------------------
+
+#RxEasyHttp
+-keep class com.zhouyou.http.model.** {*;}
+-keep class com.zhouyou.http.cache.model.** {*;}
+-keep class com.zhouyou.http.cache.stategy.**{*;}
 
 
