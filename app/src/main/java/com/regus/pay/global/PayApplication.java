@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.multidex.MultiDex;
 
 import com.blankj.utilcode.util.Utils;
+import com.dhh.websocket.Config;
+import com.dhh.websocket.RxWebSocket;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -39,6 +41,13 @@ public class PayApplication extends Application {
         //初始化DBFLOW
         FlowManager.init(this);
 
+        initOKHttpUtils();
+
+        initWebSocket();
+
+    }
+
+    void initOKHttpUtils() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -49,6 +58,22 @@ public class PayApplication extends Application {
         OkHttpUtils.initClient(client);
     }
 
+
+    void initWebSocket() {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .pingInterval(3, TimeUnit.SECONDS)
+                .build();
+
+        Config config = new Config.Builder()
+                .setShowLog(true)           //show  log
+                .setClient(client)   //if you want to set your okhttpClient
+                //   .setShowLog(true, "your logTag")
+                .setReconnectInterval(2, TimeUnit.SECONDS)  //set reconnect interval
+                //    .setSSLSocketFactory(yourSSlSocketFactory, yourX509TrustManager) // wss support
+                .build();
+        RxWebSocket.setConfig(config);
+    }
 
 
 }

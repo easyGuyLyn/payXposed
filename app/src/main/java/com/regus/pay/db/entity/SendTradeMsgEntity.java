@@ -26,10 +26,10 @@ public class SendTradeMsgEntity extends BaseModel {
     private String token; //token
 
     @Column
-    private long time; //任务发生的时间
+    private long time; //订单推送接收到的时间
 
     @Column
-    private boolean status; //任务完成情况
+    private int status; //任务完成情况  -----> 0 未拿到订单信息  1 已经拿到，未上传  2 已经上传
 
 
     /**
@@ -44,6 +44,9 @@ public class SendTradeMsgEntity extends BaseModel {
 
     @Column
     private String consumerName; //消费者名字
+
+    @Column
+    private long orderTime; //订单时间
 
     @Column
     private String remark; //备注,详细信息
@@ -92,11 +95,11 @@ public class SendTradeMsgEntity extends BaseModel {
         this.time = time;
     }
 
-    public boolean isStatus() {
+    public int isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -122,6 +125,14 @@ public class SendTradeMsgEntity extends BaseModel {
 
     public void setConsumerName(String consumerName) {
         this.consumerName = consumerName;
+    }
+
+    public long getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(long orderTime) {
+        this.orderTime = orderTime;
     }
 
     public String getRemark() {

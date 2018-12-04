@@ -1,4 +1,4 @@
-package com.regus.pay.task.model;
+package com.regus.pay.task.tasks;
 
 import android.content.Intent;
 
@@ -14,10 +14,16 @@ public class ProductQrTask extends BaseTask {
         this.aliPayInfo = aliPayInfo;
     }
 
+
+    protected void excuteChildTask(){
+        super.excuteChildTask();
+        startProductQrTask();
+    }
+
     /**
      * 开始 生产二维码任务
      */
-    public void startTask() {
+    protected void startProductQrTask() {
 
         XLogUtil.log("Task  xposed: 生成码" + money + ";;" + token + ";;" + account);
 
@@ -30,7 +36,7 @@ public class ProductQrTask extends BaseTask {
             intent.putExtra("name", aliPayInfo);
             PayApplication.mAppContext.sendBroadcast(intent);
         } catch (Throwable th) {
-            isFinish = true;
+            setLastBillFinish();
         }
 
     }

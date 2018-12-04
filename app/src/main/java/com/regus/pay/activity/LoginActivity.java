@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -11,9 +12,15 @@ import com.guoqi.iosdialog.IOSDialog;
 import com.regus.pay.R;
 import com.regus.pay.util.CommonUtil;
 import com.regus.pay.util.SingleToast;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static com.regus.pay.global.ConstantValue.SP_APP_INFO;
 
 
 public class LoginActivity extends BaseActivity {
@@ -24,6 +31,11 @@ public class LoginActivity extends BaseActivity {
     EditText account;
     @BindView(R.id.login_button)
     Button loginButton;
+    @BindView(R.id.pwd)
+    EditText etPwd;
+    @BindView(R.id.tv_version_name)
+    TextView tvVersionName;
+
     private IOSDialog mTipDialog;
 
 
@@ -63,7 +75,7 @@ public class LoginActivity extends BaseActivity {
         } else if (CommonUtil.isAppRunning(mContext, "com.eg.android.AlipayGphone")) {
             setContentView(R.layout.activity_login);
 
-            Object token = SPUtils.getInstance("supay_v3").getString("token");
+            Object token = SPUtils.getInstance(SP_APP_INFO).getString("token");
 
             if (!TextUtils.isEmpty((CharSequence) token)) {
                 mTipDialog = new IOSDialog(this);
@@ -99,19 +111,42 @@ public class LoginActivity extends BaseActivity {
 
         loginButton.setClickable(false);
         String shanghu = mchNo.getText().toString();
-        String shebei = account.getText().toString();
+        String memNo = account.getText().toString();
+        String pwd = etPwd.getText().toString();
 
         if (TextUtils.isEmpty(shanghu)) {
             SingleToast.showMsg("商户号不能为空！");
             loginButton.setEnabled(true);
             return;
-        } else if (TextUtils.isEmpty(shebei)) {
+        } else if (TextUtils.isEmpty(memNo)) {
             SingleToast.showMsg("操作员不能为空！");
+            loginButton.setEnabled(true);
+            return;
+        } else if (TextUtils.isEmpty(pwd)) {
+            SingleToast.showMsg("密码不能为空！");
             loginButton.setEnabled(true);
             return;
         }
 
+
         //login  todo
+
+        OkHttpUtils.get().build().execute(new Callback() {
+            @Override
+            public Object parseNetworkResponse(Response response, int id) throws Exception {
+                return null;
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(Object response, int id) {
+
+            }
+        });
 
 
     }
@@ -119,7 +154,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        tvVersionName.setText(String.format(getResources().getString(R.string.app_version_name), AppUtils.getAppVersionName()));
     }
 
     @Override

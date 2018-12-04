@@ -1,4 +1,4 @@
-package com.regus.pay.task.model;
+package com.regus.pay.task.tasks;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -11,10 +11,11 @@ import okhttp3.Call;
 public class UploadTradeMsgTask extends BaseTask {
 
 
-    private String tradeNo;//交易号
+    protected String tradeNo;//交易号
 
-    private String consumerName;//消费者名字
+    protected String consumerName;//消费者名字
 
+    protected long orderTime;//订单时间
 
     public void setTradeNo(String tradeNo) {
         this.tradeNo = tradeNo;
@@ -24,11 +25,20 @@ public class UploadTradeMsgTask extends BaseTask {
         this.consumerName = consumerName;
     }
 
+    public void setOrderTime(long orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    @Override
+    protected void excuteChildTask() {
+        super.excuteChildTask();
+        uploadTradeMsg();
+    }
 
     /**
      * 上传抓取好的订单信息
      */
-    public void uploadTradeMsg() {
+    protected void uploadTradeMsg() {
 
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("token", token);
@@ -51,11 +61,10 @@ public class UploadTradeMsgTask extends BaseTask {
                         //todo    修改数据表中的....
 
 
-                         setLastBillTime();
+                        setLastBillFinish();
                     }
                 });
 
     }
-
 
 }

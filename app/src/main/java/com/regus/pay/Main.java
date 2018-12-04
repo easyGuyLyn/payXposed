@@ -30,6 +30,13 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import okhttp3.Call;
 
+import static com.regus.pay.global.ConstantValue.receiver_alipay_error;
+import static com.regus.pay.global.ConstantValue.receiver_alipay_inRisk;
+import static com.regus.pay.global.ConstantValue.receiver_qr;
+import static com.regus.pay.global.ConstantValue.receiver_query_trade;
+import static com.regus.pay.global.ConstantValue.receiver_trade;
+import static com.regus.pay.global.ConstantValue.receiver_unknown;
+
 /**
 
  */
@@ -49,7 +56,7 @@ public class Main implements IXposedHookLoadPackage {
         if (!TextUtils.isEmpty(loadPackageParam.packageName) && !TextUtils.isEmpty(loadPackageParam.processName)) {
             String str = loadPackageParam.packageName;
             final String str2 = loadPackageParam.processName;
-            if (str.equals("com.regus.pay")) {
+            if (str.equals(AppUtils.getAppPackageName())) {
                 XposedHelpers.findAndHookMethod("com.regus.pay.activity.LoginActivity", loadPackageParam.classLoader, "isModuleActive", new Object[]{XC_MethodReplacement.returnConstant(Boolean.valueOf(true))});
             }
             if (str.equals("com.eg.android.AlipayGphone")) {
@@ -114,7 +121,7 @@ public class Main implements IXposedHookLoadPackage {
                             }
                             if (!stringBuffer.toString().contains(stringExtra)) {
                                 Intent intent2 = new Intent();
-                                intent2.putExtra("type", 10);
+                                intent2.putExtra("type", receiver_alipay_error);
                                 intent2.putExtra("values", stringBuffer.toString());
                                 intent2.setAction("getResult");
                                 context.sendBroadcast(intent2);
@@ -180,7 +187,7 @@ public class Main implements IXposedHookLoadPackage {
                                             intent.addCategory("android.intent.category.DEFAULT");
                                             intent.setData(Uri.parse("alipays://platformapi/startApp?appId=10000011&url=https://render.alipay.com/p/z/merchant-mgnt/simple-order.html?source=mdb_new_sqm_card"));
                                             Main.this.mContext.startActivity(intent);
-                                            AppUtils.launchApp("com.regus.pay");
+                                            AppUtils.launchApp(AppUtils.getAppPackageName());
                                             return;
                                         }
                                         JSONArray jSONArray = JSON.parseObject(str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"))).getJSONObject("result").getJSONArray("list");
@@ -188,7 +195,7 @@ public class Main implements IXposedHookLoadPackage {
                                             Intent intent2 = new Intent();
                                             intent2.putExtra("list", jSONArray.toJSONString());
                                             intent2.putExtra("cookies", callStaticMethod2.toString());
-                                            intent2.putExtra("type", 3);
+                                            intent2.putExtra("type", receiver_query_trade);
                                             intent2.setAction("getResult");
                                             context.sendBroadcast(intent2);
                                         }
@@ -223,7 +230,7 @@ public class Main implements IXposedHookLoadPackage {
 //                                    intent.addCategory("android.intent.category.DEFAULT");
 //                                    intent.setData(Uri.parse("alipays://platformapi/startApp?appId=10000011&url=https://render.alipay.com/p/z/merchant-mgnt/simple-order.html?source=mdb_new_sqm_card"));
 //                                    Main.this.mContext.startActivity(intent);
-//                                    AppUtils.launchApp("com.regus.pay");
+//                                    AppUtils.launchApp(AppUtils.getAppPackageName());
 //                                    return;
 //                                }
 //                                JSONArray jSONArray = JSON.parseObject(str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"))).getJSONObject("result").getJSONArray("list");
@@ -308,7 +315,7 @@ public class Main implements IXposedHookLoadPackage {
                         intent2.putExtra("beizhu", str);
                         intent2.putExtra("tradeNo", string4);
                         intent2.putExtra("consumerName", str2.trim());
-                        intent2.putExtra("type", 2);
+                        intent2.putExtra("type", receiver_trade);
                         intent2.setAction("getResult");
                         context.sendBroadcast(intent2);
                         XLogUtil.log("到账: tradeNo:" + string4 + "money :" + string3 + "beizhu :" + str + "consumerName :" + str2.trim());
@@ -316,7 +323,7 @@ public class Main implements IXposedHookLoadPackage {
                     }
                     XLogUtil.log("不是到账" + methodHookParam.args[0]);
                     intent = new Intent();
-                    intent.putExtra("type", 3652);
+                    intent.putExtra("type", receiver_unknown);
                     intent.putExtra("msg", methodHookParam.args[0].toString());
                     intent.setAction("getResult");
                     context.sendBroadcast(intent);
@@ -324,7 +331,7 @@ public class Main implements IXposedHookLoadPackage {
                     if (!str2.contains("到账")) {
                         XLogUtil.log("不是到账" + methodHookParam.args[0]);
                         intent = new Intent();
-                        intent.putExtra("type", 3652);
+                        intent.putExtra("type", receiver_unknown);
                         intent.putExtra("msg", methodHookParam.args[0].toString());
                         intent.setAction("getResult");
                         context.sendBroadcast(intent);
@@ -365,8 +372,8 @@ public class Main implements IXposedHookLoadPackage {
                                                     Intent intent = new Intent("android.intent.action.VIEW");
                                                     intent.addCategory("android.intent.category.DEFAULT");
                                                     intent.setData(Uri.parse("alipays://platformapi/startApp?appId=10000011&url=https://render.alipay.com/p/z/merchant-mgnt/simple-order.html?source=mdb_new_sqm_card"));
-                                                    Main.this.mContext.startActivity(intent);
-                                                    AppUtils.launchApp("com.regus.pay");
+                                                    mContext.startActivity(intent);
+                                                    AppUtils.launchApp(AppUtils.getAppPackageName());
                                                     return;
                                                 }
                                                 JSONArray jSONArray = JSON.parseObject(str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"))).getJSONObject("result").getJSONArray("list");
@@ -374,7 +381,7 @@ public class Main implements IXposedHookLoadPackage {
                                                     Intent intent2 = new Intent();
                                                     intent2.putExtra("list", jSONArray.toJSONString());
                                                     intent2.putExtra("cookies", callStaticMethod2.toString());
-                                                    intent2.putExtra("type", 3);
+                                                    intent2.putExtra("type", receiver_query_trade);
                                                     intent2.setAction("getResult");
                                                     context.sendBroadcast(intent2);
                                                 }
@@ -410,7 +417,7 @@ public class Main implements IXposedHookLoadPackage {
 //                                            intent.addCategory("android.intent.category.DEFAULT");
 //                                            intent.setData(Uri.parse("alipays://platformapi/startApp?appId=10000011&url=https://render.alipay.com/p/z/merchant-mgnt/simple-order.html?source=mdb_new_sqm_card"));
 //                                            Main.this.mContext.startActivity(intent);
-//                                            AppUtils.launchApp("com.regus.pay");
+//                                            AppUtils.launchApp(AppUtils.getAppPackageName());
 //                                            return;
 //                                        }
 //                                        JSONArray jSONArray = JSON.parseObject(str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"))).getJSONObject("result").getJSONArray("list");
@@ -431,13 +438,13 @@ public class Main implements IXposedHookLoadPackage {
                     }
                 } else if (str2.contains("赌博")) {
                     intent = new Intent();
-                    intent.putExtra("type", 110);
+                    intent.putExtra("type", receiver_alipay_inRisk);
                     intent.setAction("getResult");
                     context.sendBroadcast(intent);
                 } else {
                     XLogUtil.log("未知[" + methodHookParam.args[0]);
                     intent = new Intent();
-                    intent.putExtra("type", 3652);
+                    intent.putExtra("type", receiver_unknown);
                     intent.putExtra("msg", methodHookParam.args[0].toString());
                     intent.setAction("getResult");
                     context.sendBroadcast(intent);
@@ -493,7 +500,7 @@ public class Main implements IXposedHookLoadPackage {
                     intent.putExtra("money", str);
                     intent.putExtra("beizhu", str2);
                     intent.putExtra("payUrl", str3);
-                    intent.putExtra("type", 1);
+                    intent.putExtra("type", receiver_qr);
                     intent.putExtra("isTest", Main.this.b);
                     intent.putExtra("isGen", Main.this.c);
                     intent.putExtra("ufff", str4);

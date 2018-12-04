@@ -151,7 +151,7 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.regus.pay.bean.**{*;}   #------实体类不可混淆
+-keep class com.regus.pay.bean.**{*;}   #------网络实体类不可混淆
 
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer

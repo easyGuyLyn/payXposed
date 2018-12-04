@@ -1,13 +1,9 @@
-package com.regus.pay.task.model;
+package com.regus.pay.task.tasks;
 
-
-import android.widget.TextView;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class BaseTask implements Serializable {
+public abstract class BaseTask implements Serializable {
 
     protected String money;//金额
 
@@ -19,7 +15,9 @@ public class BaseTask implements Serializable {
 
     protected String token; //token
 
-    protected long time; //任务下发的服务器时间
+
+    //------------
+
 
     protected boolean isFinish; //任务完成情况
 
@@ -27,7 +25,6 @@ public class BaseTask implements Serializable {
 
     protected long startTime = 0; //任务开始跑的时间
 
-    protected TextView tv_lastBill; // 上次到账时间
 
 
     public void setMoney(String money) {
@@ -50,9 +47,7 @@ public class BaseTask implements Serializable {
         this.token = token;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
+
 
     public void setFinish(boolean finish) {
         this.isFinish = finish;
@@ -63,12 +58,32 @@ public class BaseTask implements Serializable {
     }
 
 
-    public void setTv_lastBill(TextView tv_lastBill) {
-        this.tv_lastBill = tv_lastBill;
+    /**
+     * 执行父任务
+     *
+     * @return
+     */
+
+    public void startTask() {
+        isFinish = false;
+        isDoing = true;
+        startTime = System.currentTimeMillis();
+        excuteChildTask();
+    }
+
+    /**
+     * 执行子任务
+     *
+     * @return
+     */
+
+    protected void excuteChildTask() {
+
     }
 
     /**
      * 任务是否结束
+     *
      * @return
      */
 
@@ -78,26 +93,13 @@ public class BaseTask implements Serializable {
 
     /**
      * 任务是否正在跑
+     *
      * @return
      */
 
     public boolean isDoing() {
         return isDoing;
     }
-
-
-
-    /**
-     * 设置 任务在跑中
-     *
-     * @return
-     */
-    public void setOnDoing() {
-        isFinish = false;
-        isDoing = true;
-        startTime = System.currentTimeMillis();
-    }
-
 
     /**
      * 是否超时
@@ -112,11 +114,18 @@ public class BaseTask implements Serializable {
     /**
      * 设置 订单任务结束
      */
-    public void setLastBillTime() {
-        if (tv_lastBill != null) {
-            tv_lastBill.setText("上次任务结束时间:" + new SimpleDateFormat("HH:mm:ss").format(new Date()));
-        }
+    public void setLastBillFinish() {
+
+//        if (tv_lastBill != null) {
+//            PayApplication.handler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    tv_lastBill.setText("上次任务结束时间:" + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+//                }
+//            });
+//        }
         isFinish = true;
     }
+
 
 }

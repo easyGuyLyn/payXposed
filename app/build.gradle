@@ -78,9 +78,9 @@ dependencies {
 
     implementation 'com.dhh:websocket:2.1.2'
 
-  //    implementation 'com.zhouyou:rxeasyhttp:2.1.2'
-
     implementation 'com.zhy:okhttputils:2.6.2'
+
+    implementation 'org.jsoup:jsoup:1.11.3'
 
     implementation 'com.alibaba:fastjson:1.2.47'
 
