@@ -1,7 +1,7 @@
 package com.regus.pay.util;
 
-import android.app.Activity;
 
+import android.app.Activity;
 
 import com.blankj.utilcode.util.LogUtils;
 

@@ -13,7 +13,6 @@ import com.regus.pay.task.TaskQueneManager;
 import com.regus.pay.util.ControlTaskUtils;
 import com.regus.pay.util.XLogUtil;
 
-
 import okhttp3.WebSocket;
 import okio.ByteString;
 import rx.Subscription;

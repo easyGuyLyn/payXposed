@@ -95,7 +95,7 @@ public class SendTradeMsgEntity extends BaseModel {
         this.time = time;
     }
 
-    public int isStatus() {
+    public int getStatus() {
         return status;
     }
 

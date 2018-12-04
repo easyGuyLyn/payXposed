@@ -5,6 +5,9 @@ import android.text.TextUtils;
 import com.regus.pay.util.ThreadUtils;
 import com.regus.pay.util.XLogUtil;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,9 +15,6 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request.Builder;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 
 public class QueryAndUploadTradeTask extends UploadTradeMsgTask {
 
